@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/ai-assistant.github.io/static/css/main.80887655.css",
-    "main.js": "/ai-assistant.github.io/static/js/main.b6674565.js",
+    "main.js": "/ai-assistant.github.io/static/js/main.2e62c648.js",
     "static/media/icon.svg": "/ai-assistant.github.io/static/media/icon.0a0a1d9b18e6806fb1649a99580b47e3.svg",
     "static/media/unlike-filled.svg": "/ai-assistant.github.io/static/media/unlike-filled.eea0bc3d000ddca242c11cc9794174a7.svg",
     "static/media/like-filled.svg": "/ai-assistant.github.io/static/media/like-filled.4dc19b7ebb71b37054ab0005c38a7884.svg",
     "static/media/copy.svg": "/ai-assistant.github.io/static/media/copy.a06c95335e74cd4a1f3660af9594698e.svg",
     "index.html": "/ai-assistant.github.io/index.html",
     "main.80887655.css.map": "/ai-assistant.github.io/static/css/main.80887655.css.map",
-    "main.b6674565.js.map": "/ai-assistant.github.io/static/js/main.b6674565.js.map"
+    "main.2e62c648.js.map": "/ai-assistant.github.io/static/js/main.2e62c648.js.map"
   },
   "entrypoints": [
     "static/css/main.80887655.css",
-    "static/js/main.b6674565.js"
+    "static/js/main.2e62c648.js"
   ]
 }
