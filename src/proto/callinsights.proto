@@ -1,0 +1,160 @@
+/*
+ This proto file contains Call Insights APIs
+*/
+syntax = "proto3";
+
+package com.cisco.wcc.ccai.v1;
+import "google/rpc/status.proto"; // to use grpc rich error model effectively
+
+
+/*
+An Utterance in the conversation.
+*/
+message ConversationMessage {
+    enum Role {
+        ROLE_UNSPECIFIED = 0; // Default value, should not be used.
+        VIRTUAL_AGENT = 1;    // Represents a virtual agent in the conversation.
+        CALLER = 2;           // Represents the caller in the conversation.
+        AGENT = 3;            // Represents a human agent in the conversation.
+    }
+
+    // Role of the Utterance Producer
+    Role        role            = 1;
+    int64       start_time      = 2;
+    int64       end_time        = 3;
+
+    // Optional: Language Code
+    string      language_code   = 4;
+    // Text Transcript
+    string      transcript      = 5;
+    // Optional: Any Custom Attributes
+    map<string, string> insights = 6;
+}
+
+/*
+Conversation Object
+*/
+message Conversation {
+    string      conversation_id = 1;
+    int64       start_timestamp = 2;
+    int64       end_timestamp   = 3;
+    // optional: Language Code, if different from the conversation language code
+    string      language_code   = 4;
+    // Conversation Messages
+    repeated    ConversationMessage  messages        = 5;
+    // optional
+    bool        redacted        = 6;
+}
+
+
+/*
+Service to Generate the Insights for a given Conversation.
+*/
+service InsightsService {
+    // Gets the insights for a given conversation, the request sends all the insights required for the conversation and response will be streamed back.
+    rpc GetInsights(GetInsightsRequest)
+        returns (stream GetInsightsResponse);
+}
+
+/*
+Request object for GetInsights
+*/
+message GetInsightsRequest {
+    // org_id
+    string          org_id              = 1;
+    // Conversation Object
+    Conversation    conversation        = 2;
+    // Type of Event for which Insights are requested
+    EventType       event_type          = 3;
+    // Type of Insight requested
+    InsightsConfig   insight_config     = 4;
+    // Optional: Any Text based Context to be passed.
+    string          call_context        = 5;
+    // optional: Custom Attributes like Customer Name etc. can be passed here.
+    map<string, string> call_attributes = 6;
+    //Request timestamp
+    int64 request_timestamp = 9;
+}
+
+/*
+ Events to be handled for Insights generation at different stage of call.
+*/
+enum EventType {
+    EVENT_TYPE_UNSPECIFIED = 0; // Default value, should not be used.
+    VA_AGENT_TRANSFER = 1;      // Indicates a transfer from a virtual agent to a human agent.
+    AGENT_AGENT_TRANSFER = 2;   // Indicates a transfer between human agents.
+    CALL_END = 3;               // Indicates the end of a call.
+    CALL_DROP = 4;              // Indicates the call was dropped.
+}
+
+/*
+ Each Config Object Indicates the type of Insight requested.
+*/
+message InsightsConfig {
+    message CustomerSentimentConfig {
+        // TBD
+    }
+
+    message AgentSentimentConfig {
+        // TBD
+    }
+
+    message TopicConfig {
+        // TBD
+    }
+
+    message SummaryConfig {
+        // Length of the Summary
+        int32 length = 1;
+    }
+}
+
+/*
+The response object of GetInsights at any stage for a Conversation, will containt one Insights at a time.
+*/
+message GetInsightsResponse {
+    // org_id
+    string              org_id              = 1;
+
+    // Conversation Id
+    string              conversation_id     = 2;
+
+    // Event For which request was made
+    EventType           event_type          = 3;
+    // Call Insights Returned one at a time in the form of stream.
+    oneof CallInsight {
+        Sentiment       customer_sentiment  = 4;
+        Sentiment       agent_sentiment     = 5;
+        CallTopic       call_topic          = 6;
+        CallSummary     call_summary        = 7;
+        google.rpc.Status error_status      = 8; // Rich error information using gRPC error model.
+
+    }
+    int64 response_timestamp = 9; // Timestamp when the response is generated.
+}
+
+/*
+ Sentiment of the Customer or Agent
+*/
+message Sentiment {
+    float   score       = 1;        // Score
+    float   magnitude   = 2;        // Magnitude
+    string  sentiment   = 3;        // Sentiment Type
+}
+
+/*
+ Call Topic
+*/
+message CallTopic {
+    // TBD
+}
+
+/*
+Summary of the Call
+*/
+message CallSummary {
+    // Text Summary
+    string              summary = 1;
+    // Summary Broken up into attributes, depending on the type of event
+    map<string, string> summary_attributes = 2;
+}
