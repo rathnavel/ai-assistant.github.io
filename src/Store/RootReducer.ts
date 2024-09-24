@@ -6,7 +6,6 @@ import cdsReducer from "../APIIntegrations/CDSData";
 import sessionVariablesReducer from "../Utils/SessionVariables";
 import vasReducer from "../APIIntegrations/VASummary";
 import wellnessBreakReducer from "../APIIntegrations/WellnessBreaks";
-import idleCodesReducer from "../APIIntegrations/IdleCodes";
 
 const rootReducer = combineReducers({
   // Add slice reducers here
@@ -14,8 +13,7 @@ const rootReducer = combineReducers({
   cdsAPI: cdsReducer,
   sessionVariables: sessionVariablesReducer,
   VASummary: vasReducer,
-  wellnessBreaks: wellnessBreakReducer,
-  idleCodes: idleCodesReducer
+  wellnessBreaks: wellnessBreakReducer
   // Other reducers can be added here
 });
 

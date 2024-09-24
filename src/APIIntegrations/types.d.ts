@@ -44,10 +44,3 @@ export interface WellnessBreakContent {
   agentEngaged: boolean | null;
   error: WellnessBreakError | null;
 }
-
-export interface IdleCode {
-  state: "Available" | "Idle";
-  codeName: string;
-  codeId: string;
-}
-
