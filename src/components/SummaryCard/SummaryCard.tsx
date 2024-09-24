@@ -10,16 +10,12 @@ interface SummaryCardProps {
   content: Map<string, string>;
   contentRaw: string;
   timestamp: string;
-  widgetType: string;
-  children?: React.ReactNode;
 }
 
 const SummaryCard: FC<SummaryCardProps> = ({
   content,
   contentRaw,
-  timestamp,
-  widgetType,
-  children,
+  timestamp
 }) => {
   const [upClicked, setUpClicked] = useState(false);
   const [downClicked, setDownClicked] = useState(false);

@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import AssistantPanelHeader from "./AssistantPanelHeader";
 import { FormatDateTime } from "../../Utils/TimeUtils";
 import SummaryCard from "../SummaryCard/SummaryCard";
-import { WellnessBreakError, WellnessBreakResponse } from "../../Utils/WellnessBreakTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Store";
 
@@ -11,33 +10,28 @@ interface SummaryCardMapping {
   contentRaw: string;
   timestamp: string;
   header: string;
-  widgetType: string;
-  actionable: boolean;
-  response: WellnessBreakResponse;
-  agentEngaged: boolean | null;
-  error: WellnessBreakError | null;
 }
 
 function renderCard(index: number, card: SummaryCardMapping): JSX.Element {
   const formattedTimestamp = card.timestamp ? FormatDateTime(card.timestamp) : "";
   console.info("Formatted Date: ", formattedTimestamp);
 
-  return <SummaryCard key={index} content={card.content} contentRaw={card.contentRaw} timestamp={formattedTimestamp} widgetType={card.widgetType} />;
+  return <SummaryCard key={index} content={card.content} contentRaw={card.contentRaw} timestamp={formattedTimestamp} />;
 }
 
 const AssistantPanel = (props: any): any => {
   const summariesEndRef = useRef<null | HTMLDivElement>(null);
-  // const { grpcData } = useSelector((state: RootState) => state.VASummary);
-  const grpcData = useMemo(() => {
-    return {
-      summary: {
-        call_reason: "Customer Inquiry",
-        hand_off_reason: "Escalation to Supervisor",
-        details: "*Issue with billing\n*Requested refund\n*Account update needed"
-      },
-      interactionDateTime: "23/Apr/2023:11:42:35"
-    };
-  }, []);
+  const { grpcData } = useSelector((state: RootState) => state.VASummary);
+  // const grpcData = useMemo(() => {
+  //   return {
+  //     summary: {
+  //       call_reason: "Customer Inquiry",
+  //       hand_off_reason: "Escalation to Supervisor",
+  //       details: "*Issue with billing\n*Requested refund\n*Account update needed"
+  //     },
+  //     interactionDateTime: "23/Apr/2023:11:42:35"
+  //   };
+  // }, []);
 
   const [summaryCards, setSummaryCards] = useState<SummaryCardMapping[]>([]);
 
@@ -115,11 +109,6 @@ const AssistantPanel = (props: any): any => {
           contentRaw: contentRaw ?? "",
           timestamp: timestamp ?? "",
           header: header ?? "",
-          widgetType: "VAHSummary",
-          actionable: false,
-          response: WellnessBreakResponse.NONE,
-          agentEngaged: null,
-          error: null
         }
       ]);
     } else console.info("Summary Not available", content);
