@@ -16,9 +16,10 @@ export async function fetchGrpcData(url: string, authToken: string, activeCallId
   let bearerAuthToken = '';
   if(isBasic && isBasic !== '') {
     bearerAuthToken = "Basic " + authToken;
+  } else {
+    bearerAuthToken = "Bearer " + authToken;
   }
 
-  bearerAuthToken = "Bearer " + authToken;
   const client = new AiInsightClient(url, null, null);
   const insightsServingRequest = new InsightsServingRequest();
 
