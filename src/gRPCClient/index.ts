@@ -12,7 +12,13 @@ import { VASResponse } from "../APIIntegrations/types";
 
 export async function fetchGrpcData(url: string, authToken: string, activeCallId: string, orgId: string): Promise<VASResponse> {
   console.log(`Creating channel for conversationId: ${activeCallId}`);
-  const bearerAuthToken = "Basic " + authToken;
+  const isBasic = localStorage.getItem("Basic");
+  let bearerAuthToken = '';
+  if(isBasic && isBasic !== '') {
+    bearerAuthToken = "Basic " + authToken;
+  }
+
+  bearerAuthToken = "Bearer " + authToken;
   const client = new AiInsightClient(url, null, null);
   const insightsServingRequest = new InsightsServingRequest();
 
